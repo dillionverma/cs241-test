@@ -1,0 +1,33 @@
+# VALID TESTS
+
+
+# THESE TESTS SHOULD PASS
+test1:
+  in: |-
+    .word 4
+  out: |
+    00000000: 00000000 00000000 00000000 00000100  ....
+test2:
+  in: |-
+    .word 0x42
+  out: |
+    00000000: 00000000 00000000 00000000 01000010  ...B
+test3:
+  in: |-
+    .word 0x42T
+  error: true
+test4:
+  in: |-
+    .word
+  error: true
+
+
+# THESE TESTS SHOULD FAIL
+test5:
+  in: |-
+    .word 0x42T
+  error: false
+test6:
+  in: |-
+    .word 0x43
+  error: true

@@ -6,6 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dillionverma/cs241-test"
+  },
+  "bugs": {
+    "url": "https://github.com/dillionverma/cs241-test/issues"
+  },
+  "homepage": "https://github.com/dillionverma/cs241-test",
   "keywords": [
     "cs241",
     "waterloo",
