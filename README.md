@@ -1,10 +1,14 @@
 # CS241 Test Script :ok_hand:
 
-![screenshot](https://github.com/dillionverma/cs241-test/blob/master/screenshot.png)
+<p align="center">
+	<br>
+	<img src="https://github.com/dillionverma/cs241-test/blob/master/screenshot.png" width="500">
+	<br>
+</p>
 
 ## Installation
 
-```
+```bash
 git clone git@github.com:dillionverma/cs241-test.git
 cd cs241-test && npm install
 ```
@@ -17,7 +21,7 @@ cd cs241-test && npm install
 * `testFile` is a single YAML file which contains all test cases
  
     #### Example Usage
-    ```
+    ```bash
     make
     ./test.js ./asm test.yaml
     ```
@@ -29,7 +33,7 @@ cd cs241-test && npm install
 
 Follow this exact template to create your own tests:
 
-```
+```yaml
 <testName>:
   in: |-
     <input here>
