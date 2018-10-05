@@ -1,4 +1,4 @@
-# cs241-test
+# CS241 Test Script :ok_hand:
 
 ![screenshot](https://github.com/dillionverma/cs241-test/blob/master/screenshot.png)
 
@@ -25,19 +25,7 @@ cd cs241-test && npm install
     
 ## How to create tests
 
-This is what a typical `test.js` file would look like:
-
-```
-test1:
-  in: |-
-    .word 4
-  out: |
-    00000000: 00000000 00000000 00000000 00000100  ....
-test3:
-  in: |-
-    .word 0x42T
-  error: true
-```
+**[CLICK HERE](https://github.com/dillionverma/cs241-test/blob/master/test.yaml) to see an example `test.yaml` file**
 
 Follow this exact template to create your own tests:
 
