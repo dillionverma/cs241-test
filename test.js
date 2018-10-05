@@ -4,10 +4,13 @@ var colors = require('colors');
 var exec = require('child_process').exec;
 var yaml = require('js-yaml');
 
-var testFile = './test.yaml'
+var testFile = 'test.yaml'
 var program;
 
-if (process.argv[2]) {
+if (process.argv[2] && process.argv[3]) {
+  program = process.argv[2];
+  testFile = process.argv[3];
+} else if (process.argv[2]) {
   program = process.argv[2];
 } else {
   console.log("Need program as argument")
