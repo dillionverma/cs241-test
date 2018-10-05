@@ -1,5 +1,7 @@
 # cs241-test
 
+![screenshot](https://github.com/dillionverma/cs241-test/blob/master/screenshot.png)
+
 ## Installation
 
 ```
