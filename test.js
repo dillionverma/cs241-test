@@ -1,11 +1,13 @@
 #!/usr/bin/env node
-var fs = require('fs');
-var colors = require('colors');
-var exec = require('child_process').exec;
-var yaml = require('js-yaml');
+const fs = require('fs');
+const colors = require('colors');
+const exec = require('child_process').exec;
+const yaml = require('js-yaml');
+const ls = require('log-symbols');
+const async = require('async');
 
-var testFile = 'test.yaml'
-var program;
+let testFile = 'test.yaml'
+let program;
 
 if (process.argv[2] && process.argv[3]) {
   program = process.argv[2];
@@ -19,41 +21,43 @@ if (process.argv[2] && process.argv[3]) {
 
 function printResults(equals, name) {
   if (equals) {
-    console.log(`Pass: ${name}`.green)
+    console.log(ls.success, ` ${name}`.green)
   } else {
-    console.log(`Fail: ${name}`.red)
+    console.log(ls.error, ` ${name}`.red)
   }
 }
 
-var tests = yaml.safeLoad(fs.readFileSync(testFile, {encoding: 'utf8'}));
+let tests = yaml.safeLoad(fs.readFileSync(testFile, {encoding: 'utf8'}));
+let results = {complete: 0, success: 0};
+let startTime = Date.now();
 
-var numComplete = 0;
-var failCount = 0;
-Object.entries(tests).forEach(([name, test]) => {
-  numComplete++;
+async.eachOfSeries(tests, (test, name, done) => {
   let command = program + ' <<< "' + test.in + '" | xxd -b -c4';
+  results.complete++;
   exec(command, (err, stdout, stderr) => {
 
     // VALID TEST CASE PASS - GOOD
     if (!stderr && !test.error) {
-      printResults(stdout.toString() === test.out, name)
+      let comp = stdout.toString() === test.out;
+      printResults(comp, name)
+      if (comp) results.success++;
 
     // ERROR TEST CASE FAIL - GOOD
     } else if (stderr && test.error) {
       var expectedError = test.out || 'ERROR';
-      printResults(stderr.toString().indexOf(expectedError) !== -1, name)
+      let comp = stderr.toString().indexOf(expectedError) !== -1;
+      printResults(comp, name)
+      if (comp) results.success++;
 
     // VALID TEST CASE FAIL - BAD
     } else if (stderr && !test.error){
       printResults(false, name)
-      console.log(` Expected:\n  no error\n Actual:\n  ${stderr.toString()}`.yellow)
-      failCount++;
+      console.log(ls.warning, ` Expected:\n     no error\n   Actual:\n     ${stderr.toString()}`.yellow)
 
     // ERROR TEST CASE PASS - BAD
     } else if (!stderr && test.error) {
       printResults(false, name)
-      console.log(` Expected error, but got none`.yellow)
-      failCount++;
+      console.log(ls.warning, ` Expected error, but got none`.yellow)
 
     // MAGICAL ERRORS
     } else {
@@ -62,7 +66,21 @@ Object.entries(tests).forEach(([name, test]) => {
       console.log("stdout: " + stdout)
     }
 
+    done();
   });
-})
+}, e => {
+  if (e) console.log("Script failed: ", e.message)
+  console.log("\n============================\n".blue)
+  console.log(`TEST SUMMARY\n`.bold.blue)
 
-console.log(`Completed ${numComplete} tests`.blue)
+  if (results.success === results.complete) {
+    console.log(ls.success,` ${results.success}/${results.complete} tests passed`.green)
+  } else if (results.success/results.complete < 0.5) {
+    console.log(ls.error,` ${results.success}/${results.complete} tests passed`.red)
+  } else {
+    console.log(ls.warning,` ${results.success}/${results.complete} tests passed`.yellow)
+  }
+  console.log(`Time: ${((Date.now() - startTime) / 1000)}s\n`.green);
+});
+
+
