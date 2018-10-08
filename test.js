@@ -40,21 +40,32 @@ async.eachOfSeries(tests, (test, name, done) => {
     if (!stderr && !test.error) {
       let comp = stdout.toString() === test.out;
       printResults(comp, name)
-      if (comp) results.success++;
+      if (comp) {
+        results.success++;
+      } else {
+        console.log(ls.warning, ` Expected:\n     ${test.out}`.yellow)
+        console.log(`   Actual:\n     ${stdout.toString()}`.yellow)
+      }
 
-    // ERROR TEST CASE FAIL - GOOD
+    // INVALID TEST CASE FAIL - GOOD
     } else if (stderr && test.error) {
       var expectedError = test.out || 'ERROR';
       let comp = stderr.toString().indexOf(expectedError) !== -1;
       printResults(comp, name)
-      if (comp) results.success++;
+      if (comp) {
+        results.success++;
+      } else {
+        // If expecting a specific error message
+        console.log(ls.warning, ` Expected:\n     ${test.out}`.yellow)
+        console.log(`   Actual:\n     ${stderr.toString()}`.yellow)
+      }
 
     // VALID TEST CASE FAIL - BAD
     } else if (stderr && !test.error){
       printResults(false, name)
       console.log(ls.warning, ` Expected:\n     no error\n   Actual:\n     ${stderr.toString()}`.yellow)
 
-    // ERROR TEST CASE PASS - BAD
+    // INVALID TEST CASE PASS - BAD
     } else if (!stderr && test.error) {
       printResults(false, name)
       console.log(ls.warning, ` Expected error, but got none`.yellow)

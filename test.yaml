@@ -2,32 +2,41 @@
 
 
 # THESE TESTS SHOULD PASS
-test1:
+word-decimal:
   in: |-
     .word 4
   out: |
     00000000: 00000000 00000000 00000000 00000100  ....
-test2:
+word-hex:
   in: |-
     .word 0x42
   out: |
     00000000: 00000000 00000000 00000000 01000010  ...B
-test3:
+word-invalid-char:
   in: |-
     .word 0x42T
   error: true
-test4:
+word-no-arg:
   in: |-
     .word
   error: true
-
+jr-31:
+  in: |-
+    jr $31
+  out: |
+    00000000: 00000011 11100000 00000000 00001000  ....
+add-0-0-0:
+  in: |-
+    add $0, $0, $0
+  out: |
+    00000000: 00000000 00000000 00000000 00100000  ...
 
 # THESE TESTS SHOULD FAIL
-test5:
-  in: |-
-    .word 0x42T
-  error: false
-test6:
-  in: |-
-    .word 0x43
-  error: true
+#word-should-fail:
+  #in: |-
+    #.word 0x42T
+  #error: false
+#word-should-pass:
+  #in: |-
+    #.word 0x43
+  #error: true
