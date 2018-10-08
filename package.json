@@ -2,7 +2,7 @@
   "name": "cs241-test",
   "version": "1.0.0",
   "description": "A testing script for cs241 compilers course @ uwaterloo.",
-  "main": "test.js",
+  "main": "index.js",
   "repository": "dillionverma/cs241-test",
   "homepage": "https://github.com/dillionverma/cs241-test",
   "keywords": [
