@@ -1,5 +1,8 @@
 # CS241 Test Script :ok_hand:
 
+
+[![npm](https://img.shields.io/npm/v/cs241-test.svg)](https://www.npmjs.com/package/cs241-test)
+
 <p align="center">
 	<br>
 	<img src="https://github.com/dillionverma/cs241-test/blob/master/screenshot.png" width="500">
@@ -9,13 +12,12 @@
 ## Installation
 
 ```bash
-git clone git@github.com:dillionverma/cs241-test.git
-cd cs241-test && npm install
+npm install -g cs241-test
 ```
 
 ## Usage
 
-`./test.js [compiler] [testFile]`
+`cs241-test [compiler] [testFile]`
 
 * `compiler` is the compiled version of c++/racket code
 * `testFile` is a single YAML file which contains all test cases
@@ -23,7 +25,7 @@ cd cs241-test && npm install
     #### Example Usage
     ```bash
     make
-    ./test.js ./asm test.yaml
+    cs241-test ./asm test.yaml
     ```
     
     
