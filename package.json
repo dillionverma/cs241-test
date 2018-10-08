@@ -1,6 +1,6 @@
 {
   "name": "cs241-test",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A testing script for cs241 compilers course @ uwaterloo.",
   "main": "index.js",
   "repository": "dillionverma/cs241-test",
