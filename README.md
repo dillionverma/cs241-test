@@ -5,7 +5,7 @@
 
 <p align="center">
 	<br>
-	<img src="https://github.com/dillionverma/cs241-test/blob/master/screenshot.svg" width="700">
+	<img src="https://github.com/dillionverma/cs241-test/blob/master/screenshot.gif" width="700">
 	<br>
 </p>
 
