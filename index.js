@@ -32,7 +32,7 @@ let results = {complete: 0, success: 0};
 let startTime = Date.now();
 
 async.eachOfSeries(tests, (test, name, done) => {
-  let command = program + " <<< '" + test.in + "' | xxd -b -c4";
+  let command = `echo '${test.in}' | ${program} | xxd -b -c4`;
   results.complete++;
   exec(command, (err, stdout, stderr) => {
 
