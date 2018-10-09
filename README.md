@@ -22,11 +22,12 @@ npm install -g cs241-test
 * `compiler` is the compiled version of c++/racket code
 * `testFile` is a single YAML file which contains all test cases
  
-    #### Example Usage
-    ```bash
-    make
-    cs241-test ./asm test.yaml
-    ```
+## Example Usage
+
+```bash
+make
+cs241-test ./asm test.yaml
+```
     
     
 ## How to create tests
