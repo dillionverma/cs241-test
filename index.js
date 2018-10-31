@@ -27,6 +27,10 @@ commander
 commander
   .parse(process.argv);
 
+function printErrors(expected, actual) {
+  console.log(ls.warning, `\nExpected:\n${expected}`.yellow)
+  console.log(`Actual:\n${actual}`.yellow)
+}
 
 function runTests(program, testFile = "test.yaml") {
   let tests = yaml.safeLoad(fs.readFileSync(testFile, {encoding: 'utf8'}));
@@ -49,8 +53,7 @@ function runTests(program, testFile = "test.yaml") {
         if (comp) {
           results.success++;
         } else {
-          console.log(ls.warning, `\nExpected:\n${test.out}`.yellow)
-          console.log(`Actual:\n${stdout.toString()}`.yellow)
+          printErrors(test.out, stdout.toString())
         }
 
       // INVALID TEST CASE FAIL - GOOD
@@ -61,15 +64,13 @@ function runTests(program, testFile = "test.yaml") {
         if (comp) {
           results.success++;
         } else {
-          // If expecting a specific error message
-          console.log(ls.warning, `\nExpected:\n${test.out}`.yellow)
-          console.log(`Actual:\n${stderr.toString()}`.yellow)
+          printErrors(test.out, stdout.toString())
         }
 
       // VALID TEST CASE FAIL - BAD
       } else if (stderr && !test.error){
         printResults(false, name)
-        console.log(ls.warning, `\nExpected:\nno error\nActual:\n${stderr.toString()}`.yellow)
+        printErrors("no error", stderr.toString())
 
       // INVALID TEST CASE PASS - BAD
       } else if (!stderr && test.error) {
@@ -102,8 +103,8 @@ function runTests(program, testFile = "test.yaml") {
   });
 }
 
-function printResults(equals, name) {
-  if (equals) {
+function printResults(success, name) {
+  if (success) {
     console.log(ls.success, ` ${name}`.green)
   } else {
     console.log(ls.error, ` ${name}`.red)
