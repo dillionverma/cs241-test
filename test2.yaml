@@ -1,0 +1,26 @@
+main:
+  in: |-
+    //
+    // WLP4 program with two integer parameters, a and b
+    //   returns the sum of a and b
+    //
+       int wain(int a, int b) {
+         return a + b;   // unhelpful comment about summing a and b
+       }
+  out: |
+    INT int
+    WAIN wain
+    LPAREN (
+    INT int
+    ID a
+    COMMA ,
+    INT int
+    ID b
+    RPAREN )
+    LBRACE {
+    RETURN return
+    ID a
+    PLUS +
+    ID b
+    SEMI ;
+    RBRACE }
