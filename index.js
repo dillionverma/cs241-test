@@ -27,24 +27,17 @@ commander
 commander
   .parse(process.argv);
 
-function printErrors(expected, actual) {
-  console.log(ls.warning, `\nExpected:\n${expected}`.yellow)
-  console.log(`Actual:\n${actual}`.yellow)
-}
-
 function runTests(program, testFile = "test.yaml") {
   let tests = yaml.safeLoad(fs.readFileSync(testFile, {encoding: 'utf8'}));
   let results = {complete: 0, success: 0};
   let startTime = Date.now();
   async.eachOfSeries(tests, (test, name, done) => {
-    let command;
-    if (commander.wlp4) {
-      command = `echo '${test.in}' | ${program}`;
-    } else {
-      command = `echo '${test.in}' | ${program} | xxd -b -c4`;
+    let command = program
+    if (commander.binary) {
+      command += " | xxd -b -c4 "
     }
     results.complete++;
-    exec(command, (err, stdout, stderr) => {
+    var child = exec(command, (err, stdout, stderr) => {
 
       // VALID TEST CASE PASS - GOOD
       if (!stderr && !test.error) {
@@ -86,6 +79,7 @@ function runTests(program, testFile = "test.yaml") {
 
       done();
     });
+    child.stdin.end(test.in);
   }, e => {
     if (e) console.log("Script failed: ", e.message)
     console.log("\n============================\n".blue)
@@ -101,6 +95,11 @@ function runTests(program, testFile = "test.yaml") {
     }
     console.log(`Time: ${((Date.now() - startTime) / 1000)}s\n`.green);
   });
+}
+
+function printErrors(expected, actual) {
+  console.log(ls.warning, `\nExpected:\n${expected}`.yellow)
+  console.log(`Actual:\n${actual}`.yellow)
 }
 
 function printResults(success, name) {
